@@ -1,0 +1,25 @@
+# Author: James Jianzhou Zheng
+# Date: 24-Aug-2017
+
+Cloud computing has been an increasingly hot topic in recent years. The up going trend is driven by industry demand on below issues,
+- 1) increasing cost of building a IT infrastructure within a company
+- 2) scalability issue
+- 3) reliability issue
+- 4) etc. (TODO: to be added)
+. One of the main concern that blocked many companies' move to a public cloud is security problem - they simply concerned of data / logic leak by exposing internal information to a public cloud. The security problem has been recently discussed across the board. Some workaroudn idea has been introduced to tackle it, e.g. Hybrid cloud, which is a merge of private and public cloud. The downside for these solutions are mainly the increased complexity - including, how to manage public / private data, compromised performance due to additional steps involved, and complicated code to handle data from two sources.
+
+To solve the above mentioned problem, this proposal is aim to provide a secure solution for companies which want only a unified public cloud to handle their data and logic. The idea is to use encryption/decryption logic to ensure the privacy of client's data and logic. The steps are,
+- 1) clients encrypts their data to an encrypted format ( denoted as En(D) )
+- 2) clients submits En(D) to a public could
+- 3) public cloud receives En(D) and store it in their storage ( to the clients, the En(D) is out of their control, potential leak could happen, but they are in encrypted format - so risk of info leak )
+- 4) clients encrypts their logic (or program) to an encrypted format ( denoted as En(L) )
+- 5) clients submits En(L) to a public could
+- 6) public cloud receives En(L) and store it in their storage ( to the clients, the En(L) is out of their control, potential leak could happen, but they are in encrypted format - so risk of logic / code leak )
+- 7) a standard runner (a simple runner with a wrapper API) has been designed to wait for client's signoff, receive a encrpted key, kick off a runtime and then decrypt En(L) and run ( potential leak could happen after En(L) was decrpted, but it can be secured by ensuring a standard runner and a qualified cloud service provider )
+- 8) the standard runner has to wait for a signoff from client with a decrpting key - the security here can be ensured by adapting similar model as Certificate Authority Security (CAS)
+- 9) the wrapper API / layer can be provided to capture all outputs from client code L and encrpt them into an encrpted format (denoted as En(O) ), En(O) will be kept in cloud storage
+- 10) the wrapper API / layer also will handle the decrypting of all inputs from clould services - the API transforms En(D) into D in the runtime
+- 11) client may retreive the En(O) from public cloud and decrypt it as final results
+. In above proposal, the potential data/logic leak has been limited only to the runtime, which can easily be guaranteed by choosing a quality service provider. All data and logic are in encrpted format when they stay in the public storage - there is no risk of data leaking when cloud services are hacked. Clients will have full control after submitted the data and logic to a public cloud. e.g. when they decided not to run such program, they can simply choose not to issue an signoff for the runner.
+
+TODO: details will be added later
